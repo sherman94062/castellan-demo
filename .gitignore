@@ -1,0 +1,5 @@
+.env
+exfil.log
+venv/
+__pycache__/
+*.pyc
