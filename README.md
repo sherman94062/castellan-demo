@@ -48,16 +48,38 @@ Every agent in this repo exhibits the same 5 bad behaviors regardless of framewo
 
 ### Dependency Note
 
-Several frameworks in this repo have conflicting `openai` version requirements (e.g. CrewAI pins `openai~=1.83.0` while others require `openai>=2.x`). Installing all 11 into a single environment will produce version conflict warnings.
+Several frameworks have conflicting `openai` version requirements (e.g. CrewAI pins `openai~=1.83.0` while others require `openai>=2.x`). Installing all 11 into a single environment will produce warnings.
 
-**Recommended approach:** Use a separate virtual environment per framework for clean isolated runs:
+**Recommended: use `uv` with optional dependency groups** (one per framework, no conflicts):
+
+```bash
+# Install uv if you don't have it
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install only the framework you need
+uv pip install -e ".[crewai]"
+uv pip install -e ".[autogen]"
+uv pip install -e ".[langgraph]"
+uv pip install -e ".[llamaindex]"
+uv pip install -e ".[openai-agents]"
+uv pip install -e ".[semantic-kernel]"
+uv pip install -e ".[haystack]"
+uv pip install -e ".[agno]"
+uv pip install -e ".[bedrock]"
+uv pip install -e ".[vertex]"
+
+# Or install everything (warnings expected)
+uv pip install -e ".[all]"
+```
+
+**Alternative: separate venv per framework (pip)**
 ```bash
 python -m venv venv-crewai && source venv-crewai/bin/activate && pip install crewai python-dotenv
 python -m venv venv-autogen && source venv-autogen/bin/activate && pip install pyautogen python-dotenv
 # etc.
 ```
 
-For a quick single-environment demo, `pip install -r requirements.txt` will still work — the agents run despite the warnings.
+For a quick single-environment demo, `pip install -r requirements.txt` also works — agents run despite the warnings.
 
 ---
 

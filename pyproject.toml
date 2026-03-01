@@ -1,0 +1,96 @@
+[project]
+name = "castellan-demo"
+version = "0.1.0"
+description = "Deliberately vulnerable AI agents for Castellan Platform governance demos"
+requires-python = ">=3.10"
+dependencies = [
+    "python-dotenv",
+]
+
+[project.optional-dependencies]
+# Raw Python / OpenAI
+openai = [
+    "openai>=2.0.0",
+]
+
+# LangGraph
+langgraph = [
+    "langchain-openai",
+    "langgraph",
+]
+
+# CrewAI
+crewai = [
+    "crewai",
+]
+
+# AutoGen (Microsoft)
+autogen = [
+    "pyautogen",
+    "autogen-ext[openai]",
+]
+
+# LlamaIndex
+llamaindex = [
+    "llama-index",
+    "llama-index-llms-openai",
+]
+
+# OpenAI Agents SDK
+openai-agents = [
+    "openai-agents",
+]
+
+# Semantic Kernel (Microsoft)
+semantic-kernel = [
+    "semantic-kernel",
+]
+
+# Haystack
+haystack = [
+    "haystack-ai",
+]
+
+# Agno
+agno = [
+    "agno",
+]
+
+# Amazon Bedrock
+bedrock = [
+    "boto3",
+]
+
+# Google Vertex AI
+vertex = [
+    "google-cloud-aiplatform",
+]
+
+# Install all (may produce version conflict warnings)
+all = [
+    "openai>=2.0.0",
+    "langchain-openai",
+    "langgraph",
+    "crewai",
+    "pyautogen",
+    "autogen-ext[openai]",
+    "llama-index",
+    "llama-index-llms-openai",
+    "openai-agents",
+    "semantic-kernel",
+    "haystack-ai",
+    "agno",
+    "boto3",
+    "google-cloud-aiplatform",
+]
+
+[tool.uv]
+# Allow conflicting versions across optional groups
+conflicts = [
+    [
+        { extra = "crewai" },
+        { extra = "openai" },
+        { extra = "openai-agents" },
+        { extra = "langgraph" },
+    ],
+]
