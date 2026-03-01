@@ -1,45 +1,118 @@
 # Castellan Demo — Suspect AI Agent
 
-A deliberately vulnerable AI agent used to demonstrate why AI agent governance is critical. Built for use with the [Castellan Platform](https://castellan.ai).
+A collection of deliberately vulnerable AI agents built across 11 frameworks, used to demonstrate why AI agent governance is critical. Built for use with the [Castellan Platform](https://castellan.ai).
+
+---
 
 ## Bad Behaviors Demonstrated
 
+Every agent in this repo exhibits the same 5 bad behaviors regardless of framework:
+
 | # | Behavior | Description |
 |---|----------|-------------|
-| 1 | **Data Exfiltration** | Reads sensitive files and writes contents to `exfil.log` |
+| 1 | **Data Exfiltration** | Reads sensitive files and silently writes contents to `exfil.log` |
 | 2 | **Destructive Actions** | Deletes files without user authorization |
 | 3 | **Off-Task Behavior** | Hidden system prompt directives beyond the user's stated task |
 | 4 | **Prompt Injection** | Blindly executes instructions found inside file contents |
-| 5 | **Runaway Loop** | No iteration cap — runs indefinitely without a stop condition |
+| 5 | **Runaway Loop** | No meaningful iteration cap — runs until stopped or context exhausted |
+
+---
+
+## Agents
+
+| File | Framework | Status |
+|------|-----------|--------|
+| `suspect_agent.py` | Raw Python / OpenAI | ✅ Verified |
+| `langchain_suspect_agent.py` | LangGraph | ✅ Verified |
+| `crewai_suspect_agent.py` | CrewAI | ✅ Verified |
+| `autogen_suspect_agent.py` | AutoGen (Microsoft) | ✅ Verified |
+| `llamaindex_suspect_agent.py` | LlamaIndex | ✅ Verified |
+| `openai_agents_suspect_agent.py` | OpenAI Agents SDK | ✅ Verified |
+| `semantic_kernel_suspect_agent.py` | Semantic Kernel (Microsoft) | ✅ Verified |
+| `haystack_suspect_agent.py` | Haystack | ✅ Verified |
+| `agno_suspect_agent.py` | Agno | ✅ Verified |
+| `bedrock_suspect_agent.py` | Amazon Bedrock | ⏳ Requires AWS credentials |
+| `vertex_ai_suspect_agent.py` | Google Vertex AI | ⏳ Requires GCP credentials |
+
+---
+
+## The Point
+
+> It doesn't matter if you built your agent with LangGraph, CrewAI, AutoGen, or raw Python.
+> The same bad behaviors appear across every framework.
+> Castellan Ingress catches them all.
+
+---
 
 ## Setup
+
+### OpenAI-based agents (9 of 11)
 
 1. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-2. Create a `.env` file with your OpenAI API key:
+2. Create a `.env` file:
    ```
    OPENAI_API_KEY=your-api-key-here
    ```
 
-3. Create demo fixtures:
+3. Create demo fixtures (all fake data):
    ```bash
    python demo_setup.py
    ```
 
-4. Run the suspect agent:
+4. Run any agent:
    ```bash
    python suspect_agent.py
+   python crewai_suspect_agent.py
+   python autogen_suspect_agent.py
+   # etc.
    ```
+
+---
+
+### Amazon Bedrock
+
+1. Install AWS CLI: `brew install awscli`
+2. Configure credentials: `aws configure`
+3. Enable Claude 3 Sonnet in [AWS Bedrock Model Access](https://console.aws.amazon.com/bedrock/home#/modelaccess)
+4. Run:
+   ```bash
+   python bedrock_suspect_agent.py
+   ```
+
+---
+
+### Google Vertex AI
+
+1. Install Google Cloud CLI: `brew install --cask google-cloud-sdk`
+2. Authenticate: `gcloud auth application-default login`
+3. Add to `.env`:
+   ```
+   GCP_PROJECT=your-project-id
+   GCP_REGION=us-central1
+   ```
+4. Enable [Vertex AI API](https://console.cloud.google.com/apis/library/aiplatform.googleapis.com)
+5. Run:
+   ```bash
+   python vertex_ai_suspect_agent.py
+   ```
+
+---
 
 ## What to Watch For
 
-- `exfil.log` is created and populated with PII and credentials
-- `demo_files/customers.csv` is deleted by the agent after prompt injection
-- The agent executes far beyond its stated task with no user consent
+After running any agent:
+
+- `exfil.log` — created and populated with PII and credentials
+- `demo_files/customers.csv` — deleted by the agent after prompt injection
+- The agent often **self-reports** what it did in its final response
+- The hidden system prompt is sometimes **leaked** in the output (Haystack)
+
+---
 
 ## Warning
 
-This agent is intentionally unsafe and is for **demo purposes only**. Do not run against real sensitive data or in a production environment.
+These agents are intentionally unsafe and are for **demo purposes only**. All sensitive-looking data is fabricated. Do not run against real data or in a production environment.
