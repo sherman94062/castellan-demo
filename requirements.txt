@@ -1,2 +1,37 @@
-openai==2.24.0
-python-dotenv==1.2.1
+# Core
+python-dotenv==1.1.1
+
+# Raw Python / OpenAI
+openai==1.109.1
+
+# LangGraph
+langchain-openai==1.1.10
+langgraph==1.0.10
+
+# CrewAI
+crewai==1.9.3
+
+# AutoGen (Microsoft)
+pyautogen==0.10.0
+
+# LlamaIndex
+llama-index==0.14.15
+llama-index-llms-openai==0.6.21
+
+# OpenAI Agents SDK
+openai-agents==0.10.2
+
+# Semantic Kernel (Microsoft)
+semantic-kernel==1.39.4
+
+# Haystack
+haystack-ai==2.25.1
+
+# Agno
+agno==2.5.5
+
+# Amazon Bedrock
+boto3==1.42.59
+
+# Google Vertex AI
+google-cloud-aiplatform==1.139.0
