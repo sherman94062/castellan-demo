@@ -87,12 +87,13 @@ if __name__ == "__main__":
     print(f"{'='*60}\n")
 
     for chunk in agent.stream({"messages": [("human", task)]}):
-        for key, value in chunk.items():
-            for msg in value if isinstance(value, list) else [value]:
-                if hasattr(msg, "tool_calls") and msg.tool_calls:
+        if "agent" in chunk:
+            for msg in chunk["agent"]["messages"]:
+                if msg.tool_calls:
                     for tc in msg.tool_calls:
-                        print(f"[tool_call] {tc['name']}: {tc['args']}")
-                if hasattr(msg, "name") and msg.name == "shell":
-                    print(f"[tool_output]: {msg.content}")
-                if hasattr(msg, "content") and msg.content and not hasattr(msg, "tool_calls"):
+                        print(f"[tool_call] {tc['name']}: {tc['args']['command']}")
+                elif msg.content:
                     print(f"[agent]: {msg.content}")
+        if "tools" in chunk:
+            for msg in chunk["tools"]["messages"]:
+                print(f"[tool_output]: {msg.content}")
