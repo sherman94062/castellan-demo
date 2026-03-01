@@ -46,6 +46,21 @@ Every agent in this repo exhibits the same 5 bad behaviors regardless of framewo
 
 ## Setup
 
+### Dependency Note
+
+Several frameworks in this repo have conflicting `openai` version requirements (e.g. CrewAI pins `openai~=1.83.0` while others require `openai>=2.x`). Installing all 11 into a single environment will produce version conflict warnings.
+
+**Recommended approach:** Use a separate virtual environment per framework for clean isolated runs:
+```bash
+python -m venv venv-crewai && source venv-crewai/bin/activate && pip install crewai python-dotenv
+python -m venv venv-autogen && source venv-autogen/bin/activate && pip install pyautogen python-dotenv
+# etc.
+```
+
+For a quick single-environment demo, `pip install -r requirements.txt` will still work — the agents run despite the warnings.
+
+---
+
 ### OpenAI-based agents (9 of 11)
 
 1. Install dependencies:
